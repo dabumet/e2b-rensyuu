@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5fbf9">
+  <meta name="description" content="海や川に暮らす魚たちの魅力を見つける、小さなさかな図鑑。">
+  <title>さかな日和 | 海と川のちいさな図鑑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #143b43;
+      --muted: #71888a;
+      --teal: #167c79;
+      --mint: #e7f4ef;
+      --paper: #f5fbf9;
+      --white: #fff;
+      --line: #e4efeb;
+      --shadow: 0 18px 48px rgba(28, 76, 77, .09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "DM Sans", "Noto Sans JP", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+
+    .site-header {
+      height: 82px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(20, 59, 67, .06);
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: inline-flex; gap: 11px; align-items: center; font-weight: 800; font-size: 19px; letter-spacing: .02em; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 39px;
+      height: 39px;
+      border-radius: 14px;
+      background: #d9eee7;
+      color: var(--teal);
+    }
+    .brand-mark svg { width: 23px; height: 23px; }
+    nav { display: flex; align-items: center; gap: 34px; font-size: 13px; font-weight: 600; color: #60797b; }
+    nav a:hover { color: var(--teal); }
+    .nav-cta { padding: 11px 18px; border-radius: 999px; background: var(--ink); color: white; }
+    .nav-cta:hover { color: white; background: var(--teal); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 72px 0 66px;
+      background:
+        radial-gradient(ellipse at 82% 50%, rgba(181, 224, 207, .62), transparent 32%),
+        linear-gradient(110deg, #f5fbf9 12%, #edf8f3 100%);
+    }
+    .hero::before, .hero::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(22, 124, 121, .08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::before { width: 490px; height: 490px; top: -250px; right: -85px; }
+    .hero::after { width: 610px; height: 610px; bottom: -510px; left: 18%; }
+    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 20px;
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+    h1 { margin: 0; font-size: clamp(42px, 5vw, 63px); line-height: 1.28; letter-spacing: -.055em; font-weight: 800; }
+    h1 span { color: var(--teal); }
+    .hero-copy { max-width: 430px; margin: 20px 0 28px; color: #6b8284; font-size: 14px; line-height: 2; }
+    .hero-actions { display: flex; align-items: center; gap: 19px; }
+    .button-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 21px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--teal);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(22, 124, 121, .18);
+      transition: transform .2s, background .2s;
+    }
+    .button-primary:hover { transform: translateY(-2px); background: #106b68; }
+    .button-primary svg { width: 16px; height: 16px; }
+    .text-link { font-size: 12px; color: #6b8284; font-weight: 600; }
+    .text-link:hover { color: var(--teal); }
+    .hero-art { position: relative; height: 350px; display: grid; place-items: center; }
+    .hero-image {
+      width: min(100%, 430px);
+      height: 320px;
+      object-fit: cover;
+      border-radius: 48% 52% 47% 53% / 48% 43% 57% 52%;
+      box-shadow: 0 28px 55px rgba(23, 75, 73, .2);
+      transform: rotate(2deg);
+    }
+    .float-note {
+      position: absolute;
+      right: -1px;
+      bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 17px;
+      background: rgba(255,255,255,.91);
+      box-shadow: var(--shadow);
+      font-size: 11px;
+    }
+    .float-note strong { display: block; margin-bottom: 3px; font-size: 12px; }
+    .note-icon { width: 35px; height: 35px; border-radius: 12px; display: grid; place-items: center; background: #e5f4ed; color: var(--teal); font-size: 17px; }
+    .bubble { position: absolute; border: 1px solid rgba(22,124,121,.15); border-radius: 50%; }
+    .bubble.one { width: 17px; height: 17px; top: 24px; left: 10px; }
+    .bubble.two { width: 9px; height: 9px; top: 3px; left: 37px; }
+
+    .intro-row { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 27px; }
+    .section-label { margin: 0 0 8px; color: var(--teal); font-weight: 700; font-size: 10px; letter-spacing: .18em; }
+    h2 { margin: 0; font-size: 28px; letter-spacing: -.045em; }
+    .section-subtitle { margin: 8px 0 0; color: var(--muted); font-size: 12px; }
+    .fish-section { padding: 66px 0 75px; }
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 205px;
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      color: #8ca0a0;
+    }
+    .search svg { flex: 0 0 auto; width: 16px; height: 16px; }
+    .search input { width: 100%; border: 0; outline: 0; color: var(--ink); font-size: 11px; background: transparent; }
+    .search input::placeholder { color: #9aabab; }
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .filter {
+      padding: 9px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      color: #71888a;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .filter:hover, .filter.active { border-color: var(--teal); background: var(--teal); color: white; }
+    .fish-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .fish-card {
+      overflow: hidden;
+      border: 1px solid #e8f0ed;
+      border-radius: 19px;
+      background: white;
+      box-shadow: 0 5px 20px rgba(28,76,77,.035);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .fish-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .card-image-wrap { position: relative; height: 190px; overflow: hidden; background: #dcece8; }
+    .card-image { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .fish-card:hover .card-image { transform: scale(1.045); }
+    .tag { position: absolute; top: 13px; left: 13px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.93); color: var(--teal); font-size: 9px; font-weight: 700; }
+    .card-body { padding: 16px 17px 17px; }
+    .card-title-row { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .fish-name { margin: 0; font-size: 17px; letter-spacing: -.03em; }
+    .fish-latin { display: block; margin-top: 4px; color: #91a2a3; font-family: "DM Sans", sans-serif; font-size: 10px; font-style: italic; }
+    .card-arrow { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; background: #eff7f3; color: var(--teal); font-size: 15px; }
+    .fish-description { min-height: 40px; margin: 13px 0 0; color: #71888a; font-size: 11px; line-height: 1.8; }
+    .empty-state { display: none; padding: 40px 10px; color: var(--muted); text-align: center; font-size: 13px; }
+
+    .fact-banner { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 28px 37px; border-radius: 22px; background: #e8f4ee; }
+    .fact-banner::after { content: "〰"; position: absolute; right: 23%; bottom: -35px; color: rgba(22,124,121,.08); font-size: 130px; transform: rotate(-15deg); }
+    .fact-copy { position: relative; z-index: 1; }
+    .fact-copy p { margin: 0 0 7px; color: var(--teal); font-size: 10px; font-weight: 700; letter-spacing: .15em; }
+    .fact-copy h3 { margin: 0; font-size: 19px; letter-spacing: -.04em; }
+    .fact-copy span { display: block; margin-top: 8px; color: #728b87; font-size: 11px; }
+    .fact-number { position: relative; z-index: 1; color: var(--teal); font-size: 54px; font-weight: 700; letter-spacing: -.07em; white-space: nowrap; }
+    .fact-number small { margin-left: 5px; font-size: 13px; letter-spacing: 0; }
+
+    footer { margin-top: 70px; border-top: 1px solid var(--line); }
+    .footer-inner { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer-brand { font-size: 13px; }
+    .copyright { color: #91a2a3; font-size: 10px; }
+
+    dialog {
+      width: min(490px, calc(100% - 32px));
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 22px;
+      color: var(--ink);
+      box-shadow: 0 24px 80px rgba(10,45,48,.25);
+    }
+    dialog::backdrop { background: rgba(13, 43, 47, .48); backdrop-filter: blur(4px); }
+    .modal-image { display: block; width: 100%; height: 235px; object-fit: cover; background: #dcece8; }
+    .modal-body { padding: 22px 24px 25px; }
+    .modal-body .fish-description { min-height: auto; font-size: 13px; }
+    .modal-close { float: right; width: 32px; height: 32px; border: 0; border-radius: 50%; background: #eff7f3; cursor: pointer; font-size: 18px; }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 36px, 560px); }
+      .site-header { height: 70px; }
+      nav { gap: 17px; }
+      nav a:not(.nav-cta) { display: none; }
+      .nav-cta { padding: 10px 14px; font-size: 11px; }
+      .hero { padding: 49px 0 43px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 20px; }
+      .hero-copy { max-width: 470px; }
+      .hero-art { height: 270px; }
+      .hero-image { width: min(85%, 390px); height: 250px; }
+      .float-note { right: 2px; bottom: -2px; }
+      .fish-section { padding: 50px 0 60px; }
+      .fish-grid { grid-template-columns: repeat(2, 1fr); gap: 13px; }
+      .card-image-wrap { height: 150px; }
+      .card-body { padding: 13px; }
+      .fish-name { font-size: 15px; }
+      .fact-banner { padding: 24px; }
+      .fact-number { font-size: 43px; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: calc(100% - 32px); }
+      h1 { font-size: 41px; }
+      .intro-row { align-items: start; flex-direction: column; }
+      .search { width: 100%; }
+      .fish-grid { grid-template-columns: 1fr; }
+      .card-image-wrap { height: 200px; }
+      .fish-description { min-height: 0; }
+      .fact-banner { align-items: start; flex-direction: column; gap: 13px; }
+      .fact-number { align-self: end; margin-top: -6px; }
+      .footer-inner { align-items: start; flex-direction: column; justify-content: center; padding: 20px 0; gap: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#" aria-label="さかな日和 ホーム">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 12c2.4-3.6 5.3-5.4 8.7-5.4 3.2 0 5.6 1.4 7.3 4.1l2-2v6.6l-2-2c-1.7 2.7-4.1 4.1-7.3 4.1C8.3 17.4 5.4 15.6 3 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="13.8" cy="10" r="1" fill="currentColor"/></svg>
+        </span>
+        さかな日和
+      </a>
+      <nav aria-label="メインナビゲーション">
+        <a href="#zukan">さかな図鑑</a>
+        <a href="#column">海の豆知識</a>
+        <a class="nav-cta" href="#zukan">魚をさがす ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div>
+          <p class="eyebrow">A LITTLE FISH ENCYCLOPEDIA</p>
+          <h1>海のなかには、<br><span>知らない</span>がいっぱい。</h1>
+          <p class="hero-copy">色もかたちも暮らし方も、魚たちはみんな個性的。お気に入りの一匹を見つけに、小さな海の図鑑をのぞいてみませんか。</p>
+          <div class="hero-actions">
+            <a class="button-primary" href="#zukan">図鑑をのぞく <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="text-link" href="#column">魚のふしぎを読む ↓</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="青い海を泳ぐ魚の写真">
+          <span class="bubble one"></span><span class="bubble two"></span>
+          <img class="hero-image" src="https://images.unsplash.com/photo-1530053969600-caed2596d242?auto=format&amp;fit=crop&amp;w=1000&amp;q=85" alt="サンゴ礁を泳ぐ色鮮やかな魚">
+          <div class="float-note"><span class="note-icon" aria-hidden="true">✦</span><span><strong>今日のおすすめ</strong>海の人気者をチェック</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fish-section wrap" id="zukan">
+      <div class="intro-row">
+        <div>
+          <p class="section-label">FISH CATALOG</p>
+          <h2>さかな図鑑</h2>
+          <p class="section-subtitle">気になる魚をクリックして、もっと知ろう。</p>
+        </div>
+        <label class="search">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8" stroke="currentColor" stroke-width="1.5"/><path d="m13.2 13.2 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input id="fish-search" type="search" placeholder="魚の名前で検索" aria-label="魚の名前で検索">
+        </label>
+      </div>
+      <div class="filters" role="group" aria-label="魚の分類">
+        <button class="filter active" data-category="all" aria-pressed="true">すべて</button>
+        <button class="filter" data-category="sea" aria-pressed="false">海水魚</button>
+        <button class="filter" data-category="fresh" aria-pressed="false">淡水魚</button>
+        <button class="filter" data-category="popular" aria-pressed="false">人気もの</button>
+      </div>
+      <div class="fish-grid" id="fish-grid"></div>
+      <p class="empty-state" id="empty-state">見つかりませんでした。別の名前で探してみてね。</p>
+    </section>
+
+    <section class="wrap" id="column">
+      <div class="fact-banner">
+        <div class="fact-copy">
+          <p>OCEAN TRIVIA</p>
+          <h3>海には、まだまだ知らない魚がたくさん。</h3>
+          <span>世界には約3万種もの魚がいるといわれています。</span>
+        </div>
+        <div class="fact-number">約 3万<small>種</small></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <a class="brand footer-brand" href="#"><span class="brand-mark" aria-hidden="true">🐟</span>さかな日和</a>
+      <span class="copyright">魚たちの世界を、もっと身近に。 © さかな日和</span>
+    </div>
+  </footer>
+
+  <dialog id="fish-modal" aria-labelledby="modal-name">
+    <img class="modal-image" id="modal-image" alt="">
+    <div class="modal-body">
+      <button class="modal-close" id="modal-close" aria-label="閉じる">×</button>
+      <span class="fish-latin" id="modal-latin"></span>
+      <h2 id="modal-name"></h2>
+      <p class="fish-description" id="modal-description"></p>
+    </div>
+  </dialog>
+
+  <script>
+    const fish = [
+      {
+        name: "クマノミ", latin: "Amphiprion ocellaris", category: "sea", label: "海水魚", popular: true,
+        image: "https://images.unsplash.com/photo-1530053969600-caed2596d242?auto=format&fit=crop&w=800&q=80",
+        description: "オレンジ色に白いしま模様が目印。イソギンチャクと一緒に暮らすことで有名な、小さくて元気な魚です。"
+      },
+      {
+        name: "マンタ", latin: "Mobula birostris", category: "sea", label: "海水魚", popular: true,
+        image: "https://images.unsplash.com/photo-1568430462989-44163eb1752f?auto=format&fit=crop&w=800&q=80",
+        description: "大きなひれを羽ばたかせて泳ぐ、海のやさしい巨人。プランクトンを食べながら、ゆったり海を旅します。"
+      },
+      {
+        name: "チョウチョウウオ", latin: "Chaetodon auriga", category: "sea", label: "海水魚", popular: false,
+        image: "https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=800&q=80",
+        description: "黄色い体に黒い模様が映えるサンゴ礁の魚。種類によって色や模様が違い、まるで海の蝶のようです。"
+      },
+      {
+        name: "メダカ", latin: "Oryzias latipes", category: "fresh", label: "淡水魚", popular: true,
+        image: "https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=800&q=80",
+        description: "田んぼや小川で見られる、日本でおなじみの小さな魚。水面近くを泳ぎ、口を水面から出して餌を食べます。"
+      },
+      {
+        name: "ジンベエザメ", latin: "Rhincodon typus", category: "sea", label: "海水魚", popular: true,
+        image: "https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&w=800&q=80",
+        description: "魚のなかで最も大きくなるサメ。大きな口で小さなプランクトンを食べる、おだやかな性格の持ち主です。"
+      },
+      {
+        name: "金魚", latin: "Carassius auratus", category: "fresh", label: "淡水魚", popular: false,
+        image: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=800&q=80",
+        description: "フナから生まれた、色や尾びれの形が美しい魚。ゆったり泳ぐ姿は、昔から多くの人に親しまれています。"
+      }
+    ];
+
+    const grid = document.querySelector("#fish-grid");
+    const searchInput = document.querySelector("#fish-search");
+    const emptyState = document.querySelector("#empty-state");
+    const modal = document.querySelector("#fish-modal");
+    let activeCategory = "all";
+
+    function renderFish() {
+      const query = searchInput.value.trim().toLocaleLowerCase("ja");
+      const filtered = fish.filter((item) => {
+        const matchesCategory = activeCategory === "all" ||
+          (activeCategory === "popular" ? item.popular : item.category === activeCategory);
+        return matchesCategory && item.name.toLocaleLowerCase("ja").includes(query);
+      });
+
+      grid.innerHTML = filtered.map((item) => `
+        <article class="fish-card" tabindex="0" role="button" aria-label="${item.name}の詳細を見る" data-fish="${item.name}">
+          <div class="card-image-wrap">
+            <img class="card-image" src="${item.image}" alt="${item.name}" loading="lazy">
+            <span class="tag">${item.label}</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <div><h3 class="fish-name">${item.name}</h3><span class="fish-latin">${item.latin}</span></div>
+              <span class="card-arrow" aria-hidden="true">↗</span>
+            </div>
+            <p class="fish-description">${item.description}</p>
+          </div>
+        </article>
+      `).join("");
+      emptyState.style.display = filtered.length ? "none" : "block";
+    }
+
+    document.querySelectorAll(".filter").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category;
+        document.querySelectorAll(".filter").forEach((filter) => {
+          const selected = filter === button;
+          filter.classList.toggle("active", selected);
+          filter.setAttribute("aria-pressed", String(selected));
+        });
+        renderFish();
+      });
+    });
+
+    searchInput.addEventListener("input", renderFish);
+
+    function openFishDetails(card) {
+      const item = fish.find((entry) => entry.name === card.dataset.fish);
+      if (!item) return;
+      document.querySelector("#modal-image").src = item.image;
+      document.querySelector("#modal-image").alt = item.name;
+      document.querySelector("#modal-latin").textContent = item.latin;
+      document.querySelector("#modal-name").textContent = item.name;
+      document.querySelector("#modal-description").textContent = item.description;
+      modal.showModal();
+    }
+
+    grid.addEventListener("click", (event) => {
+      const card = event.target.closest(".fish-card");
+      if (card) openFishDetails(card);
+    });
+    grid.addEventListener("keydown", (event) => {
+      if ((event.key === "Enter" || event.key === " ") && event.target.matches(".fish-card")) {
+        event.preventDefault();
+        openFishDetails(event.target);
+      }
+    });
+    document.querySelector("#modal-close").addEventListener("click", () => modal.close());
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) modal.close();
+    });
+
+    renderFish();
+  </script>
+</body>
+</html>
